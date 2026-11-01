@@ -1,3 +1,3 @@
 FROM debian:stable-slim
-COPY ola.sh /ola.sh
+COPY ola2.sh /ola.sh
 CMD ["bash", "/ola.sh"]
