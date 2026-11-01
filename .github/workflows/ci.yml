@@ -21,3 +21,21 @@
               sleep 3
               curl --fail http://localhost:5000
               docker stop app
+      publicar:
+    needs: teste
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Construir e publicar
+        run: |
+          docker build -t ghcr.io/jcasgm110/app-lab:latest ./app
+          docker push ghcr.io/jcasgm110/app-lab:latest
